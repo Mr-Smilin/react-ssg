@@ -1,0 +1,40 @@
+{
+  "index.html": {
+    "file": "assets/app-D0PLz4Dp.js",
+    "name": "app",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "node_modules/react-dom/client.js",
+      "src/pages/app/index.jsx"
+    ],
+    "css": [
+      "assets/app-BCVcuRKQ.css"
+    ]
+  },
+  "node_modules/react-dom/client.js": {
+    "file": "assets/client-aK2_oE_1.js",
+    "name": "client",
+    "src": "node_modules/react-dom/client.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "src/assets/react.svg": {
+    "file": "assets/react-CHdo91hT.svg",
+    "src": "src/assets/react.svg"
+  },
+  "src/pages/app/index.jsx": {
+    "file": "assets/app-BEKDVkkU.js",
+    "name": "app",
+    "src": "src/pages/app/index.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ],
+    "assets": [
+      "assets/react-CHdo91hT.svg"
+    ]
+  }
+}
