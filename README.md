@@ -180,7 +180,7 @@ if (typeof window !== "undefined") {
    "homepage": "https://your-name.github.io/your-repo-name/"
    ```
 
-3. 在 GitHub repo → **Settings → Pages → Source** 選擇 `Deploy from a branch`，Branch 選 `main`
+3. 在 GitHub repo → **Settings → Pages → Source** 選擇 `Deploy from a branch`，Branch 選 `gh-pages`
 
 ---
 
