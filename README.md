@@ -4,14 +4,14 @@
 
 ## 技術棧
 
-| 套件 | 用途 |
-|------|------|
-| [rolldown-vite](https://vite.dev/guide/rolldown) | 建置工具（Rolldown 後端） |
-| [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) | React + Babel + React Compiler |
-| [vite-react-ssg](https://github.com/Daydreamer-riri/vite-react-ssg) | 靜態預渲染（SSG） |
-| [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages) | 檔案系統路由自動生成 |
-| [react-router-dom](https://reactrouter.com/) | 客戶端路由（由 vite-react-ssg 管理） |
-| [styled-components](https://styled-components.com/) | 頁面級 CSS 注入 |
+| 套件                                                                | 用途                                 |
+| ------------------------------------------------------------------- | ------------------------------------ |
+| [rolldown-vite](https://vite.dev/guide/rolldown)                    | 建置工具（Rolldown 後端）            |
+| [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) | React + Babel + React Compiler       |
+| [vite-react-ssg](https://github.com/Daydreamer-riri/vite-react-ssg) | 靜態預渲染（SSG）                    |
+| [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages)  | 檔案系統路由自動生成                 |
+| [react-router-dom](https://reactrouter.com/)                        | 客戶端路由（由 vite-react-ssg 管理） |
+| [styled-components](https://styled-components.com/)                 | 頁面級 CSS 注入                      |
 
 ## 指令
 
@@ -48,7 +48,7 @@ src/pages/
 ```jsx
 import { Link } from "react-router-dom";
 
-<Link to="/app">前往 App 頁</Link>
+<Link to="/app">前往 App 頁</Link>;
 ```
 
 ---
@@ -68,12 +68,12 @@ import css from "./style.css?raw";
 const PageStyles = createGlobalStyle`${css}`;
 
 export default function MyPage() {
-  return (
-    <>
-      <PageStyles />
-      {/* 頁面內容 */}
-    </>
-  );
+	return (
+		<>
+			<PageStyles />
+			{/* 頁面內容 */}
+		</>
+	);
 }
 ```
 
@@ -96,7 +96,7 @@ export default function MyPage() {
 ```jsx
 import reactLogo from "../../assets/react.svg";
 
-<img src={reactLogo} alt="React logo" />
+<img src={reactLogo} alt="React logo" />;
 ```
 
 建置後檔名會帶 hash（如 `react-BUBnl1aA.svg`），適合長期快取。
@@ -106,9 +106,9 @@ import reactLogo from "../../assets/react.svg";
 適合不需要 hash、必須保持固定路徑的資源（如 favicon、Open Graph 圖片）：
 
 ```jsx
-import viteLogo from "/vite.svg";   // 對應 public/vite.svg
+import viteLogo from "/vite.svg"; // 對應 public/vite.svg
 
-<img src={viteLogo} alt="Vite logo" />
+<img src={viteLogo} alt="Vite logo" />;
 ```
 
 建置後路徑不變，直接複製到 `dist/` 根目錄。
@@ -140,10 +140,10 @@ import routes from "~react-pages";
 import "./global.css";
 
 export const createRoot = ViteReactSSG(
-  { routes, basename: import.meta.env.BASE_URL },
-  ({ router, isClient, initialState }) => {
-    // 可在此進行 plugin 初始化（如 pinia、i18n）
-  }
+	{ routes, basename: import.meta.env.BASE_URL },
+	({ router, isClient, initialState }) => {
+		// 可在此進行 plugin 初始化（如 pinia、i18n）
+	},
 );
 ```
 
@@ -158,7 +158,7 @@ import { useSSRContext } from "vite-react-ssg";
 
 // 或直接判斷
 if (typeof window !== "undefined") {
-  // 僅在客戶端執行
+	// 僅在客戶端執行
 }
 ```
 
@@ -166,17 +166,47 @@ if (typeof window !== "undefined") {
 
 ## 部署至 GitHub Pages
 
+### 前置設定
+
 1. 在 `vite.config.js` 設定 `base`：
+
    ```js
    base: "/your-repo-name",
    ```
 
 2. 在 `package.json` 確認 `homepage`：
+
    ```json
    "homepage": "https://your-name.github.io/your-repo-name/"
    ```
 
-3. 執行部署：
-   ```bash
-   npm run deploy
-   ```
+3. 在 GitHub repo → **Settings → Pages → Source** 選擇 `Deploy from a branch`，Branch 選 `main`
+
+---
+
+### 方式一：手動部署
+
+在本機執行，建置完成後直接推送到 `gh-pages` 分支：
+
+```bash
+npm run deploy
+```
+
+內部依序執行 `npm run build`（`predeploy` hook）再執行 `gh-pages -d dist`。
+
+---
+
+### 方式二：GitHub Actions 自動部署
+
+每次 push 到 `main` 分支時，由 `.github/workflows/deploy.yml` 自動觸發建置與部署，流程如下：
+
+```
+push to main
+  → Checkout 取得程式碼
+  → Setup Node.js 22（含 npm 快取）
+  → npm ci 安裝套件
+  → npm run build 產生 dist/
+  → peaceiris/actions-gh-pages 推送 dist/ 到 gh-pages 分支
+```
+
+使用 `GITHUB_TOKEN`（Actions 內建），不需要額外設定 Secret。
